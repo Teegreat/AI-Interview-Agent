@@ -1,7 +1,6 @@
 "use server";
 
-import { auth, db } from "@/firebase/admin";
-import { cookies } from "next/headers";
+import { db } from "@/firebase/admin";
 
 export async function getInterviewsByUserId(
   userId: string
@@ -35,4 +34,13 @@ export async function getLatestInterviews(
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
+}
+
+export async function getInterviewById(
+  id: string
+): Promise<Interview | null> {
+  const interview = await db
+    .collection("interviews").doc(id).get()
+
+  return interview.data() as Interview | null
 }
